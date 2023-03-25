@@ -2,7 +2,7 @@
   "version": 2,
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/prod-api/(.*)",
       "destination": "https://api.qzdcg.com/api/$1"
     }
   ]
