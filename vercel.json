@@ -1,10 +1,3 @@
 {
-  "version": 2,
-  "redirects": [
-    {
-      "source": "/prod-api/(.*)",
-      "destination": "https://api.qzdcg.com/api/$1",
-      "statusCode": 301
-    }
-  ]
 }
+
