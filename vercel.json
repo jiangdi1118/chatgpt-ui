@@ -1,3 +1,32 @@
 {
+	"version": 2,
+	"public": true,
+	"env": {
+	},
+	"builds": [
+		{
+			"src": "service/build/index.ts",
+			"use": "@vercel/node",
+			"config": { "includeFiles": ["service/build/**"] }
+		},
+		{
+			"src": "dist/**",
+			"use": "@vercel/static",
+			"config": { "includeFiles": ["dist/**"] }
+		}
+	],
+	"routes": [
+		{
+			"src": "/api/(.*)",
+			"dest": "service/build/index.ts"
+		},
+		{
+			"src": "/",
+			"dest": "dist/index.html"
+		},
+		{
+			"src": "/(.+)",
+			"dest": "dist/$1"
+		}
+	]
 }
-
