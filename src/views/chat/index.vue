@@ -13,7 +13,7 @@ import { useUsingContext } from './hooks/useUsingContext'
 import HeaderComponent from './components/Header/index.vue'
 import { HoverButton, SvgIcon } from '@/components/common'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
-import { useChatStore, usePromptStore } from '@/store'
+import { useChatStore, usePromptStore ,useSettingStore} from '@/store'
 import { fetchChatAPIProcess } from '@/api'
 import { t } from '@/locales'
 
@@ -59,9 +59,28 @@ function handleSubmit() {
   onConversation()
 }
 
+//组装上下文数据
+function contextualAssemblyData() {
+  const conversation = []
+  const settingStore = useSettingStore()
+  let sys = { 'role': 'systemMessage', 'content': settingStore.systemMessage }
+  conversation.push(sys)
+  for (var chat of dataSources.value) {
+    if (chat.inversion&&!chat.conversationOptions) {
+      let my = { 'role': 'user', 'content': chat.text }
+      conversation.push(my)
+    } else {
+      let ai = { 'role': 'assistant', 'content': chat.text }
+      conversation.push(ai)
+    }
+  }
+  console.log(conversation)
+  // return
+  return conversation
+}
+
 async function onConversation() {
   let message = prompt.value
-
   if (loading.value)
     return
 
@@ -88,9 +107,10 @@ async function onConversation() {
 
   let options: Chat.ConversationRequest = {}
   const lastContext = conversationList.value[conversationList.value.length - 1]?.conversationOptions
-
   if (lastContext && usingContext.value)
     options = { ...lastContext }
+
+  let myProp = contextualAssemblyData();
 
   addChat(
     +uuid,
@@ -108,27 +128,26 @@ async function onConversation() {
 
   try {
     let lastText = ''
+
     const fetchChatAPIOnce = async () => {
+
       await fetchChatAPIProcess<Chat.ConversationResponse>({
         prompt: message,
         options,
+        myProp: myProp,
         signal: controller.signal,
         onDownloadProgress: ({ event }) => {
-          const xhr = event.target
-          const { responseText } = xhr
-          // Always process the final line
-          const lastIndex = responseText.lastIndexOf('\n', responseText.length - 2)
-          let chunk = responseText
-          if (lastIndex !== -1)
-            chunk = responseText.substring(lastIndex)
+
           try {
-            const data = JSON.parse(chunk)
+
+            const data = event
+            lastText = lastText + data.text ?? '';
             updateChat(
               +uuid,
               dataSources.value.length - 1,
               {
                 dateTime: new Date().toLocaleString(),
-                text: lastText + data.text ?? '',
+                text: lastText,
                 inversion: false,
                 error: false,
                 loading: false,
@@ -137,23 +156,17 @@ async function onConversation() {
               },
             )
 
-            if (openLongReply && data.detail.choices[0].finish_reason === 'length') {
-              options.parentMessageId = data.id
-              lastText = data.text
-              message = ''
-              return fetchChatAPIOnce()
-            }
-
             scrollToBottomIfAtBottom()
           }
           catch (error) {
-          //
+            console.error('Error occurred during onDownloadProgress:', error);
           }
         },
       })
     }
 
     await fetchChatAPIOnce()
+
   }
   catch (error: any) {
     const errorMessage = error?.message ?? t('common.wrong')
@@ -216,9 +229,10 @@ async function onRegenerate(index: number) {
   let message = requestOptions?.prompt ?? ''
 
   let options: Chat.ConversationRequest = {}
-
   if (requestOptions.options)
     options = { ...requestOptions.options }
+  let myProp = contextualAssemblyData();
+  myProp = myProp.slice(index);
 
   loading.value = true
 
@@ -242,23 +256,20 @@ async function onRegenerate(index: number) {
       await fetchChatAPIProcess<Chat.ConversationResponse>({
         prompt: message,
         options,
+        myProp: myProp,
         signal: controller.signal,
         onDownloadProgress: ({ event }) => {
-          const xhr = event.target
-          const { responseText } = xhr
-          // Always process the final line
-          const lastIndex = responseText.lastIndexOf('\n', responseText.length - 2)
-          let chunk = responseText
-          if (lastIndex !== -1)
-            chunk = responseText.substring(lastIndex)
+
           try {
-            const data = JSON.parse(chunk)
+            const data = event;
+            lastText = lastText + data.text ?? '';
+
             updateChat(
               +uuid,
               index,
               {
                 dateTime: new Date().toLocaleString(),
-                text: lastText + data.text ?? '',
+                text: lastText,
                 inversion: false,
                 error: false,
                 loading: false,
@@ -267,19 +278,16 @@ async function onRegenerate(index: number) {
               },
             )
 
-            if (openLongReply && data.detail.choices[0].finish_reason === 'length') {
-              options.parentMessageId = data.id
-              lastText = data.text
-              message = ''
-              return fetchChatAPIOnce()
-            }
           }
           catch (error) {
-            //
+            console.error('Error occurred during onDownloadProgress:', error);
+
           }
+
         },
       })
     }
+
     await fetchChatAPIOnce()
   }
   catch (error: any) {
