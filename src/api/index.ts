@@ -36,7 +36,6 @@ export async function fetchChatAPIProcess<T = any>(
     baseUrl: import.meta.env.VITE_GLOB_OPENAI_API_URL, apiKey: import.meta.env.VITE_GLOB_OPENAI_API_KEY,
     model: import.meta.env.VITE_GLOB_API_MODEL
   }
-  params.stream = true;
 
   const response = await fetch(
       `${base.baseUrl}/v1/chat/completions`, {
