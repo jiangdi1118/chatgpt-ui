@@ -19,8 +19,6 @@ import { t } from '@/locales'
 
 let controller = new AbortController()
 
-const openLongReply = import.meta.env.VITE_GLOB_OPEN_LONG_REPLY === 'true'
-
 const route = useRoute()
 const dialog = useDialog()
 const ms = useMessage()
@@ -133,7 +131,7 @@ async function onConversation() {
 
       await fetchChatAPIProcess<Chat.ConversationResponse>({
         prompt: message,
-        options,
+        options: options,
         myProp: myProp,
         signal: controller.signal,
         onDownloadProgress: ({ event }) => {
@@ -255,11 +253,12 @@ async function onRegenerate(index: number) {
     const fetchChatAPIOnce = async () => {
       await fetchChatAPIProcess<Chat.ConversationResponse>({
         prompt: message,
-        options,
+        options: options,
         myProp: myProp,
+        model: "",
+        stream: true,
         signal: controller.signal,
         onDownloadProgress: ({ event }) => {
-
           try {
             const data = event;
             lastText = lastText + data.text ?? '';

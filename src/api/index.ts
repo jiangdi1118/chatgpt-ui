@@ -21,13 +21,13 @@ export function fetchChatConfig<T = any>() {
 
 export async function fetchChatAPIProcess<T = any>(
     params: {
-      prompt: string
+      prompt?: string
       options?: { conversationId?: string; parentMessageId?: string }
       signal?: AbortSignal
-      onDownloadProgress?: (progressEvent: ProgressEvent) => void
-      model: string
-      stream: boolean
-      messages:any[]
+      onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void
+      model?: string
+      stream?: boolean
+      messages?:any[]
       myProp: any[]
     }
 ) {
@@ -61,10 +61,10 @@ export async function fetchChatAPIProcess<T = any>(
 
   if (params.onDownloadProgress) {
 
-    const reader = response.body.getReader()
+    const reader = response.body!.getReader()
     console.log(reader)
 
-    const readStream = async (reader) => {
+    const readStream = async (reader: any) => {
       let partialData = '';
       while (true) {
         const { done, value } = await reader.read()
@@ -95,7 +95,7 @@ export async function fetchChatAPIProcess<T = any>(
                   role: 'assistant',
                   conversationId: undefined
                 };
-                params.onDownloadProgress({ event: progressEvent });
+                params.onDownloadProgress?.({ event: progressEvent } as AxiosProgressEvent);
               }
             }
           }

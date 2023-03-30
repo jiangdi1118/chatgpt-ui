@@ -29,8 +29,8 @@ declare namespace Chat {
 	}
 
 	interface ConversationResponse {
-		conversationId: string
-		detail: {
+		conversationId?: string
+		detail?: {
 			choices: { finish_reason: string; index: number; logprobs: any; text: string }[]
 			created: number
 			id: string
@@ -38,9 +38,14 @@ declare namespace Chat {
 			object: string
 			usage: { completion_tokens: number; prompt_tokens: number; total_tokens: number }
 		}
-		id: string
-		parentMessageId: string
-		role: string
-		text: string
+		id?: string
+		parentMessageId?: string
+		role?: string
+		text?: string
+		prompt?: string
+		model?: string
+		stream?: boolean
+		messages?:any[]
+		myProp: any[]
 	}
 }
