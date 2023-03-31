@@ -61,7 +61,6 @@ export async function fetchChatAPIProcess<T = any>(
   if (params.onDownloadProgress) {
 
     const reader = response.body!.getReader()
-    console.log(reader)
 
     const readStream = async (reader: any) => {
       let partialData = '';
@@ -76,7 +75,6 @@ export async function fetchChatAPIProcess<T = any>(
 
         for (let i = 0; i < lines.length - 1; i++) {
           const line = lines[i].trim();
-          console.log(line)
           if (line === "[DONE]") {
             return;
           } else if (line !== "") {
