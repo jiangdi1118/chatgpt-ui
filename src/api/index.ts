@@ -38,7 +38,7 @@ export async function fetchChatAPIProcess<T = any>(
   }
 
   const response = await fetch(
-      `${base.baseUrl}/v1/chat/completions`, {
+      `/v1/chat/completions`, {
         method: "POST",
         body: JSON.stringify({
           max_tokens: 1000,

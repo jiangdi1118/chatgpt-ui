@@ -13,7 +13,7 @@ import { useUsingContext } from './hooks/useUsingContext'
 import HeaderComponent from './components/Header/index.vue'
 import { HoverButton, SvgIcon } from '@/components/common'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
-import { useChatStore, usePromptStore } from '@/store'
+import { useChatStore, usePromptStore,useSettingStore } from '@/store'
 import { fetchChatAPIProcess } from '@/api'
 import { t } from '@/locales'
 
@@ -60,9 +60,9 @@ function handleSubmit() {
 //组装上下文数据
 function contextualAssemblyData() {
   const conversation = []
-  // const settingStore = useSettingStore()
-  // let sys = { 'role': 'systemMessage', 'content': settingStore.systemMessage }
-  // conversation.push(sys)
+  const settingStore = useSettingStore()
+  let sys = { 'role': 'system', 'content': settingStore.systemMessage }
+  conversation.push(sys)
   for (var chat of dataSources.value) {
     if (chat.inversion&&!chat.conversationOptions) {
       let my = { 'role': 'user', 'content': chat.text }
