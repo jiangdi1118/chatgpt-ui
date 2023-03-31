@@ -8,6 +8,6 @@
 		{
             "src": "/v1/(.*)",
             "dest": "https://api.openai.com/v1/$1"
-        },
+        }
 	]
 }
