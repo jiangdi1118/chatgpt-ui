@@ -1,15 +1,30 @@
-import { ss } from '@/utils/storage'
+import { ss } from '@/utils/storage';
 
-const LOCAL_NAME = 'SECRET_TOKEN'
+const TOKEN_NAME = 'SECRET_TOKEN';
+const EXPIRE_TIME_NAME = 'TOKEN_EXPIRE_TIME';
 
 export function getToken() {
-  return ss.get(LOCAL_NAME)
+  const token = ss.get(TOKEN_NAME);
+  const expireTime = ss.get(EXPIRE_TIME_NAME);
+
+  if (token && expireTime) {
+    const currentTime = new Date().getTime();
+    if (currentTime > parseInt(expireTime, 10)) {
+      removeToken();
+      return undefined;
+    }
+    return token;
+  }
+  return undefined;
 }
 
-export function setToken(token: string) {
-  return ss.set(LOCAL_NAME, token)
+export function setToken(token: string, expiresIn: number) {
+  // expiresIn 参数现在是一个绝对的过期时间戳
+  ss.set(TOKEN_NAME, token);
+  ss.set(EXPIRE_TIME_NAME, expiresIn.toString());
 }
 
 export function removeToken() {
-  return ss.remove(LOCAL_NAME)
+  ss.remove(TOKEN_NAME);
+  ss.remove(EXPIRE_TIME_NAME);
 }

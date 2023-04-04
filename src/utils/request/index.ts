@@ -17,24 +17,33 @@ export interface Response<T = any> {
   data: T
   message: string | null
   status: string
+  code?: number
+  accessToken?: string
 }
 
 function http<T = any>(
   { url, data, method, headers, onDownloadProgress, signal, beforeRequest, afterRequest }: HttpOption,
 ) {
   const successHandler = (res: AxiosResponse<Response<T>>) => {
-    const authStore = useAuthStore()
-
-    if (res.data.status === 'Success' || typeof res.data === 'string')
-      return res.data
-
-    if (res.data.status === 'Unauthorized') {
-      authStore.removeToken()
-      window.location.reload()
+    const authStore = useAuthStore();
+  
+    if (res.data.status === 'Success' || typeof res.data === 'string') {
+      return res.data;
     }
-
-    return Promise.reject(res.data)
-  }
+  
+    // 添加对 code === 0 的兼容
+    if (res.data.code === 0 || typeof res.data.accessToken === 'string') {
+      return res.data;
+    }
+  
+    if (res.data.status === 'Unauthorized' || res.data.code === 401) {
+      authStore.removeToken();
+      window.location.reload();
+    }
+  
+    return Promise.reject(res.data);
+  };
+  
 
   const failHandler = (error: Response<Error>) => {
     afterRequest?.()

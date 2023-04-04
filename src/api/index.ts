@@ -1,6 +1,7 @@
 import type { AxiosProgressEvent, GenericAbortSignal } from 'axios'
 import { post } from '@/utils/request'
 
+
 export function fetchChatAPI<T = any>(
   prompt: string,
   options?: { conversationId?: string; parentMessageId?: string },
@@ -119,4 +120,18 @@ export function fetchVerify<T>(token: string) {
     url: '/verify',
     data: { token },
   })
+}
+
+export function sendSmsCode(scene: number, mobile: string) {
+  return post({
+    url: '/member/auth/send-sms-code',
+    data: { mobile: mobile, scene: scene }
+  });
+}
+
+export function smsLogin(mobile: string, code: string) {
+  return post({
+    url: '/member/auth/sms-login',
+    data: { mobile: mobile, code: code }
+  });
 }

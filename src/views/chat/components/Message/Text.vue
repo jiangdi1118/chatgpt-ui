@@ -1,3 +1,20 @@
+<template>
+  <div class="text-black" :class="wrapClass">
+    <template v-if="loading">
+      <span class="dark:text-white w-[4px] h-[20px] block animate-blink" />
+    </template>
+    <template v-else>
+      <div ref="textRef" class="leading-relaxed break-words">
+        <div v-if="!inversion">
+          <div v-if="!asRawText" class="markdown-body" v-html="text" />
+          <div v-else class="whitespace-pre-wrap" v-text="text" />
+        </div>
+        <div v-else class="whitespace-pre-wrap" v-text="text" />
+      </div>
+    </template>
+  </div>
+</template>
+
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import MarkdownIt from 'markdown-it'
@@ -62,23 +79,6 @@ function highlightBlock(str: string, lang?: string) {
 
 defineExpose({ textRef })
 </script>
-
-<template>
-  <div class="text-black" :class="wrapClass">
-    <template v-if="loading">
-      <span class="dark:text-white w-[4px] h-[20px] block animate-blink" />
-    </template>
-    <template v-else>
-      <div ref="textRef" class="leading-relaxed break-words">
-        <div v-if="!inversion">
-          <div v-if="!asRawText" class="markdown-body" v-html="text" />
-          <div v-else class="whitespace-pre-wrap" v-text="text" />
-        </div>
-        <div v-else class="whitespace-pre-wrap" v-text="text" />
-      </div>
-    </template>
-  </div>
-</template>
 
 <style lang="less">
 @import url(./style.less);

@@ -86,4 +86,12 @@ export default {
     onlineImportWarning: 'Note: Please check the JSON file source!',
     downloadError: 'Please check the network status and JSON file validity',
   },
+  login: {
+    title: "SMS Login",
+    phone: "Phone Number",
+    getCode: "Get Code",
+    code: "Verification Code",
+    login: "Login",
+    wechatLogin: "WeChat Login"
+  },
 }

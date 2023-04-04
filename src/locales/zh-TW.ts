@@ -86,4 +86,12 @@ export default {
     onlineImportWarning: '注意：請檢查 JSON 檔案來源！',
     downloadError: '請檢查網路狀態與 JSON 檔案有效性',
   },
+  login: {
+    title: "短信登錄",
+    phone: "手機號",
+    getCode: "獲取驗證碼",
+    code: "驗證碼",
+    login: "登錄",
+    wechatLogin: "微信登錄"
+  }
 }

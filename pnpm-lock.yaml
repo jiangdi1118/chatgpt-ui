@@ -11,6 +11,8 @@ specifiers:
   '@types/markdown-it': ^12.2.3
   '@types/markdown-it-link-attributes': ^3.0.1
   '@types/node': ^18.14.6
+  '@vicons/antd': ^0.12.0
+  '@vicons/ionicons5': ^0.12.0
   '@vitejs/plugin-vue': ^4.0.0
   '@vue/server-renderer': ^3.2.47
   '@vueuse/core': ^9.13.0
@@ -44,6 +46,8 @@ specifiers:
 
 dependencies:
   '@traptitech/markdown-it-katex': registry.npmmirror.com/@traptitech/markdown-it-katex/3.6.0
+  '@vicons/antd': registry.npmmirror.com/@vicons/antd/0.12.0
+  '@vicons/ionicons5': registry.npmmirror.com/@vicons/ionicons5/0.12.0
   '@vue/server-renderer': registry.npmmirror.com/@vue/server-renderer/3.2.47_vue@3.2.47
   '@vueuse/core': registry.npmmirror.com/@vueuse/core/9.13.0_vue@3.2.47
   highlight.js: registry.npmmirror.com/highlight.js/11.7.0
@@ -2795,6 +2799,18 @@ packages:
       '@typescript-eslint/types': registry.npmmirror.com/@typescript-eslint/types/5.57.0
       eslint-visitor-keys: registry.npmmirror.com/eslint-visitor-keys/3.4.0
     dev: true
+
+  registry.npmmirror.com/@vicons/antd/0.12.0:
+    resolution: {integrity: sha512-C0p6aO1EmGG1QHrqgUWQS1No20934OdWSRQshM5NIDK5H1On6tC26U0hT6Rmp40KfUsvhvX5YW8BoWJdNFifPg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vicons/antd/-/antd-0.12.0.tgz}
+    name: '@vicons/antd'
+    version: 0.12.0
+    dev: false
+
+  registry.npmmirror.com/@vicons/ionicons5/0.12.0:
+    resolution: {integrity: sha512-Iy1EUVRpX0WWxeu1VIReR1zsZLMc4fqpt223czR+Rpnrwu7pt46nbnC2ycO7ItI/uqDLJxnbcMC7FujKs9IfFA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vicons/ionicons5/-/ionicons5-0.12.0.tgz}
+    name: '@vicons/ionicons5'
+    version: 0.12.0
+    dev: false
 
   registry.npmmirror.com/@vitejs/plugin-vue/4.1.0_vite@4.2.1+vue@3.2.47:
     resolution: {integrity: sha512-++9JOAFdcXI3lyer9UKUV4rfoQ3T1RN8yDqoCLar86s0xQct5yblxAE+yWgRnU5/0FOlVCpTZpYSBV/bGWrSrQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vitejs/plugin-vue/-/plugin-vue-4.1.0.tgz}

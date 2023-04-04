@@ -10,6 +10,10 @@ service.interceptors.request.use(
     const token = useAuthStore().token
     if (token)
       config.headers.Authorization = `Bearer ${token}`
+    
+    // Add tenant-id header
+    config.headers['tenant-id'] = import.meta.env.VITE_GLOB_TENANT_ID
+
     return config
   },
   (error) => {

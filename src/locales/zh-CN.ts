@@ -86,4 +86,12 @@ export default {
     onlineImportWarning: '注意：请检查 JSON 文件来源！',
     downloadError: '请检查网络状态与 JSON 文件有效性',
   },
+  login: {
+    title: "短信登录",
+    phone: "手机号",
+    getCode: "获取验证码",
+    code: "验证码",
+    login: "登录",
+    wechatLogin: "微信登录"
+  }
 }
